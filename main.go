@@ -9,6 +9,36 @@ import (
 	"strings"
 )
 
+// Session struct
+type Session struct {
+	kickID    string
+	userID    string
+	username  string
+	issueTime string
+	session   string
+	privilege string
+}
+
+// Set session data
+func (s *Session) Set(cookies []*http.Cookie) *Session {
+	for _, c := range cookies {
+		switch c.Name {
+		case "_kick_id":
+			s.kickID = c.Value
+		case "_user_id":
+			s.userID = c.Value
+		case "_user_name":
+			s.username = c.Value
+		case "_issue_time":
+			s.issueTime = c.Value
+		case "_session":
+			s.session = c.Value
+		}
+	}
+
+	return s
+}
+
 func writeGob(filePath string, object interface{}) error {
 	file, err := os.Create(filePath)
 	if err == nil {
@@ -20,7 +50,7 @@ func writeGob(filePath string, object interface{}) error {
 }
 
 func readGob(filePath string, object interface{}) error {
-	file, err := os.Create(filePath)
+	file, err := os.Open(filePath)
 	if err == nil {
 		decoder := gob.NewDecoder(file)
 		err = decoder.Decode(object)
@@ -59,22 +89,28 @@ func main() {
 
 	cookies := res.Cookies()
 	for _, c := range cookies {
-		log.Println(c.String())
+		log.Println(c.Name, c.Value)
 	}
 
-	err = writeGob("./save.txt", cookies)
+	session := &Session{}
+	session.Set(cookies)
+
+	err = writeGob("./save.gob", session)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	cookies2 := make([]*http.Cookie, 0)
-
-	err = readGob("./save.txt", cookies2)
+	session2 := &Session{}
+	err = readGob("./save.gob", session2)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for _, c := range cookies2 {
-		log.Println(c.String())
-	}
+	log.Printf("_kick_id: %s", session2.kickID)
+	log.Printf("_user_id: %s", session2.userID)
+	log.Printf("_user_name: %s", session2.username)
+	log.Printf("_issue_time: %s", session2.issueTime)
+	log.Printf("_session: %s", session2.session)
+	log.Printf("_privilege: %s", session2.privilege)
+
 }

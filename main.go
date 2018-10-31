@@ -16,6 +16,7 @@ type Session struct {
 	username  string
 	issueTime string
 	session   string
+	passport  string
 	privilege string
 }
 
@@ -33,27 +34,43 @@ func (s *Session) Set(cookies []*http.Cookie) *Session {
 			s.issueTime = c.Value
 		case "_session":
 			s.session = c.Value
+		case "__passport":
+			s.passport = c.Value
+		case "__privilege":
+			s.privilege = c.Value
 		}
 	}
 
 	return s
 }
 
-func writeGob(filePath string, object interface{}) error {
+func (s *Session) Write(filePath string) error {
 	file, err := os.Create(filePath)
 	if err == nil {
 		encoder := gob.NewEncoder(file)
-		encoder.Encode(object)
+		encoder.Encode(&s.kickID)
+		encoder.Encode(&s.userID)
+		encoder.Encode(&s.username)
+		encoder.Encode(&s.issueTime)
+		encoder.Encode(&s.session)
+		encoder.Encode(&s.passport)
+		encoder.Encode(&s.privilege)
 	}
 	file.Close()
 	return err
 }
 
-func readGob(filePath string, object interface{}) error {
+func (s *Session) Read(filePath string) error {
 	file, err := os.Open(filePath)
 	if err == nil {
 		decoder := gob.NewDecoder(file)
-		err = decoder.Decode(object)
+		decoder.Decode(&s.kickID)
+		decoder.Decode(&s.userID)
+		decoder.Decode(&s.username)
+		decoder.Decode(&s.issueTime)
+		decoder.Decode(&s.session)
+		decoder.Decode(&s.passport)
+		decoder.Decode(&s.privilege)
 	}
 	file.Close()
 	return err
@@ -95,13 +112,13 @@ func main() {
 	session := &Session{}
 	session.Set(cookies)
 
-	err = writeGob("./save.gob", session)
+	err = session.Write("save.gob")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	session2 := &Session{}
-	err = readGob("./save.gob", session2)
+	err = session2.Read("save.gob")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -111,6 +128,7 @@ func main() {
 	log.Printf("_user_name: %s", session2.username)
 	log.Printf("_issue_time: %s", session2.issueTime)
 	log.Printf("_session: %s", session2.session)
-	log.Printf("_privilege: %s", session2.privilege)
+	log.Printf("__passport: %s", session2.passport)
+	log.Printf("__privilege: %s", session2.privilege)
 
 }

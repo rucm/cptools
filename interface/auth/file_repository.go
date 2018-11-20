@@ -1,4 +1,4 @@
-package auth
+package interface
 
 import (
 	"encoding/gob"

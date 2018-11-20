@@ -9,21 +9,21 @@ import (
 	"github.com/rucm/cptools/usecase/auth"
 )
 
-// FileRepository struct
-type FileRepository struct {
+// SessionFileRepository struct
+type SessionFileRepository struct {
 	filaname string
 }
 
-// NewFileRepository : repository
-func NewFileRepository(filename string) usecase.AuthRepository {
+// NewSessionFileRepository : repository
+func NewSessionFileRepository(filename string) usecase.SessionRepository {
 
-	repo := new(FileRepository)
+	repo := new(SessionFileRepository)
 	repo.filaname = filename
 
 	return repo
 }
 
-func (repo *FileRepository) Write(session *domain.Session) {
+func (repo *SessionFileRepository) Write(session *domain.Session) {
 	file, err := os.Create(repo.filaname)
 
 	if err != nil {
@@ -34,7 +34,7 @@ func (repo *FileRepository) Write(session *domain.Session) {
 	encoder.Encode(session)
 }
 
-func (repo *FileRepository) Read() *domain.Session {
+func (repo *SessionFileRepository) Read() *domain.Session {
 	file, err := os.Open(repo.filaname)
 
 	if err != nil {

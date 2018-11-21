@@ -23,7 +23,9 @@ func NewSessionFileRepository(filename string) usecase.SessionRepository {
 	return repo
 }
 
+// Write : session write to file
 func (repo *SessionFileRepository) Write(session *domain.Session) {
+
 	file, err := os.Create(repo.filaname)
 
 	if err != nil {
@@ -34,7 +36,9 @@ func (repo *SessionFileRepository) Write(session *domain.Session) {
 	encoder.Encode(session)
 }
 
+// Read : session read from file
 func (repo *SessionFileRepository) Read() *domain.Session {
+
 	file, err := os.Open(repo.filaname)
 
 	if err != nil {
@@ -46,4 +50,14 @@ func (repo *SessionFileRepository) Read() *domain.Session {
 	decoder.Decode(session)
 
 	return session
+}
+
+// Remove : remove file of session
+func (repo *SessionFileRepository) Remove() {
+
+	err := os.Remove(repo.filaname)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }

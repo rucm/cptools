@@ -6,4 +6,5 @@ import "github.com/rucm/cptools/domain"
 type SessionRepository interface {
 	Write(session *domain.Session)
 	Read() *domain.Session
+	Remove()
 }

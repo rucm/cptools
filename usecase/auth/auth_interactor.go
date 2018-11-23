@@ -1,28 +1,21 @@
 package usecase
 
 import (
-	"github.com/rucm/cptools/domain"
+	"github.com/rucm/cptools/usecase/request"
 )
 
 // AuthInteractor : auth input port
 type AuthInteractor struct {
-	repo SessionRepository
+	Handler usecase.RequestHandler
+	Repo    usecase.SessionRepository
 }
 
-// Set : set session
-func (interactor *AuthInteractor) Set(session *domain.Session) {
+// Login : login to site
+func (interactor *AuthInteractor) Login(username string, password string) {
 
-	interactor.repo.Write(session)
 }
 
-// Get : get session
-func (interactor *AuthInteractor) Get() *domain.Session {
+// Logout : logout to site
+func (interactor *AuthInteractor) Logout() {
 
-	return interactor.repo.Read()
-}
-
-// Del : remove session
-func (interactor *AuthInteractor) Del() {
-
-	interactor.repo.Remove()
 }

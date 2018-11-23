@@ -6,19 +6,19 @@ import (
 	"os"
 
 	"github.com/rucm/cptools/domain"
-	"github.com/rucm/cptools/usecase/auth"
+	"github.com/rucm/cptools/usecase/request"
 )
 
 // SessionFileRepository struct
 type SessionFileRepository struct {
-	filaname string
+	Filaname string
 }
 
 // NewSessionFileRepository : repository
 func NewSessionFileRepository(filename string) usecase.SessionRepository {
 
 	repo := new(SessionFileRepository)
-	repo.filaname = filename
+	repo.Filaname = filename
 
 	return repo
 }
@@ -26,7 +26,7 @@ func NewSessionFileRepository(filename string) usecase.SessionRepository {
 // Write : session write to file
 func (repo *SessionFileRepository) Write(session *domain.Session) {
 
-	file, err := os.Create(repo.filaname)
+	file, err := os.Create(repo.Filaname)
 
 	if err != nil {
 		log.Fatal(err)
@@ -39,7 +39,7 @@ func (repo *SessionFileRepository) Write(session *domain.Session) {
 // Read : session read from file
 func (repo *SessionFileRepository) Read() *domain.Session {
 
-	file, err := os.Open(repo.filaname)
+	file, err := os.Open(repo.Filaname)
 
 	if err != nil {
 		log.Fatal(err)
@@ -55,7 +55,7 @@ func (repo *SessionFileRepository) Read() *domain.Session {
 // Remove : remove file of session
 func (repo *SessionFileRepository) Remove() {
 
-	err := os.Remove(repo.filaname)
+	err := os.Remove(repo.Filaname)
 
 	if err != nil {
 		log.Fatal(err)

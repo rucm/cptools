@@ -2,7 +2,7 @@ package usecase
 
 // RequestHandler : handler
 type RequestHandler interface {
-	Execute(param Parameter) Response
+	Execute(url string, param Parameter) Response
 }
 
 // Parameter : request param (post request)
@@ -14,6 +14,5 @@ type Parameter interface {
 
 // Response : response
 type Response interface {
-	Get(key string) string
-	Exists(key string) bool
+	Bind(obj interface{})
 }

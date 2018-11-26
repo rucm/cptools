@@ -2,7 +2,7 @@ package usecase
 
 // RequestHandler : handler
 type RequestHandler interface {
-	Execute(url string, param Parameter) Response
+	Execute() Response
 }
 
 // Parameter : request param (post request)

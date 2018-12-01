@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/rucm/cptools/domain"
 	"github.com/rucm/cptools/usecase/request"
 )
 
@@ -37,6 +38,7 @@ func NewAtCoderRequestHandler(url string, param AtCoderParameter) usecase.Reques
 		log.Fatal(err)
 	}
 
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	handler := &AtCoderRequestHandler{
 		req,
 	}
@@ -45,9 +47,26 @@ func NewAtCoderRequestHandler(url string, param AtCoderParameter) usecase.Reques
 }
 
 // Execute : execute request
-func (handler *AtCoderRequestHandler) Execute() *usecase.Response {
+func (handler *AtCoderRequestHandler) Execute() usecase.Response {
 
-	return nil
+	client := &http.Client{}
+	client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+		return http.ErrUseLastResponse
+	}
+
+	res, err := client.Do(handler.Request)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer res.Body.Close()
+
+	response := &AtCoderResponse{
+		res,
+	}
+
+	return response
 }
 
 // Get : AtCoderParameter
@@ -66,4 +85,12 @@ func (param *AtCoderParameter) Set(key string, value string) {
 func (param *AtCoderParameter) Del(key string) {
 
 	param.Values.Del(key)
+}
+
+// Bind : AtCoderResponse
+func (res *AtCoderResponse) Bind(session *domain.Session) {
+
+	for _, c := range res.Response.Cookies() {
+		(*session)[c.Name] = c.Value
+	}
 }

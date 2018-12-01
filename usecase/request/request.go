@@ -1,8 +1,12 @@
 package usecase
 
+import (
+	"github.com/rucm/cptools/domain"
+)
+
 // RequestHandler : handler
 type RequestHandler interface {
-	Execute() *Response
+	Execute() Response
 }
 
 // Parameter : request param (post request)
@@ -14,5 +18,5 @@ type Parameter interface {
 
 // Response : response
 type Response interface {
-	Bind(obj interface{})
+	Bind(session *domain.Session)
 }

@@ -10,23 +10,23 @@ import (
 	"github.com/rucm/cptools/usecase/request"
 )
 
-// AtCoderRequestHandler :
-type AtCoderRequestHandler struct {
+// AuthRequestHandler :
+type AuthRequestHandler struct {
 	Request *http.Request
 }
 
-// AtCoderParameter :
-type AtCoderParameter struct {
+// AuthParameter :
+type AuthParameter struct {
 	Values url.Values
 }
 
-// AtCoderResponse :
-type AtCoderResponse struct {
+// AuthResponse :
+type AuthResponse struct {
 	Response *http.Response
 }
 
-// NewAtCoderRequestHandler : create new handler
-func NewAtCoderRequestHandler(url string, param AtCoderParameter) usecase.RequestHandler {
+// NewAuthRequestHandler : create new handler
+func NewAuthRequestHandler(url string, param AuthParameter) usecase.RequestHandler {
 
 	req, err := http.NewRequest(
 		"POST",
@@ -39,7 +39,7 @@ func NewAtCoderRequestHandler(url string, param AtCoderParameter) usecase.Reques
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	handler := &AtCoderRequestHandler{
+	handler := &AuthRequestHandler{
 		req,
 	}
 
@@ -47,7 +47,7 @@ func NewAtCoderRequestHandler(url string, param AtCoderParameter) usecase.Reques
 }
 
 // Execute : execute request
-func (handler *AtCoderRequestHandler) Execute() usecase.Response {
+func (handler *AuthRequestHandler) Execute() usecase.Response {
 
 	client := &http.Client{}
 	client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
@@ -62,33 +62,33 @@ func (handler *AtCoderRequestHandler) Execute() usecase.Response {
 
 	defer res.Body.Close()
 
-	response := &AtCoderResponse{
+	response := &AuthResponse{
 		res,
 	}
 
 	return response
 }
 
-// Get : AtCoderParameter
-func (param *AtCoderParameter) Get(key string) string {
+// Get : AuthParameter
+func (param *AuthParameter) Get(key string) string {
 
 	return param.Values.Get(key)
 }
 
-// Set : AtCoderParameter
-func (param *AtCoderParameter) Set(key string, value string) {
+// Set : AuthParameter
+func (param *AuthParameter) Set(key string, value string) {
 
 	param.Values.Set(key, value)
 }
 
-// Del : AtCoderParameter
-func (param *AtCoderParameter) Del(key string) {
+// Del : AuthParameter
+func (param *AuthParameter) Del(key string) {
 
 	param.Values.Del(key)
 }
 
-// Bind : AtCoderResponse
-func (res *AtCoderResponse) Bind(session *domain.Session) {
+// Bind : AuthResponse
+func (res *AuthResponse) Bind(session *domain.Session) {
 
 	for _, c := range res.Response.Cookies() {
 		(*session)[c.Name] = c.Value

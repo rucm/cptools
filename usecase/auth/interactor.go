@@ -12,9 +12,9 @@ type AuthInteractor struct {
 }
 
 // Login : login to site
-func (interactor *AuthInteractor) Login(url string, param usecase.Parameter) {
+func (interactor *AuthInteractor) Login() {
 
-	res := interactor.Handler.Execute(url, param)
+	res := interactor.Handler.Execute()
 
 	session := &domain.Session{}
 	res.Bind(session)

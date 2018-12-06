@@ -1,4 +1,4 @@
-package interfaces
+package atcoder
 
 import (
 	"encoding/gob"

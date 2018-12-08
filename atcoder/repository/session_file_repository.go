@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/rucm/cptools/domain"
-	"github.com/rucm/cptools/usecase/request"
+	"github.com/rucm/cptools/usecase"
 )
 
 // SessionFileRepository struct

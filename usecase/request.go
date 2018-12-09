@@ -13,7 +13,7 @@ type RequestHandler interface {
 type Parameter interface {
 	Get(key string) string
 	Set(key string, value string)
-	Del(key string) error
+	Del(key string)
 	Encode() string
 }
 

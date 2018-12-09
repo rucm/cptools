@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/rucm/cptools/domain"
@@ -16,6 +17,11 @@ type RequestHandler struct {
 	Method      string
 	ContentType string
 	Session     *domain.Session
+}
+
+// Parammeter :
+type Parammeter struct {
+	Values url.Values
 }
 
 // Execute :
@@ -50,6 +56,26 @@ func (handler *RequestHandler) Execute(param usecase.Parameter) *usecase.Respons
 	response := createResponse(res)
 
 	return response
+}
+
+// Get :
+func (param *Parammeter) Get(key string) string {
+	return param.Values.Get(key)
+}
+
+// Set :
+func (param *Parammeter) Set(key string, value string) {
+	param.Values.Set(key, value)
+}
+
+// Del :
+func (param *Parammeter) Del(key string) {
+	param.Values.Del(key)
+}
+
+// Encode :
+func (param *Parammeter) Encode() string {
+	return param.Values.Encode()
 }
 
 func createRequest(method string, URL string, param string) *http.Request {

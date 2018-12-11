@@ -6,15 +6,19 @@ import (
 
 // AuthenticationInteractor :
 type AuthenticationInteractor struct {
-	Repo usecase.SessionRepository
+	Handler usecase.RequestHandler
+	Repo    usecase.SessionRepository
 }
 
 // Login : AuthenticationInteractor
-func (interactor *AuthenticationInteractor) Login(username string, password string) {
+func (interactor *AuthenticationInteractor) Login(param usecase.Parameter) {
 
+	response := interactor.Handler.Execute(param)
+	interactor.Repo.Write(response.Session)
 }
 
 // Logout : AuthenticationInteractor
 func (interactor *AuthenticationInteractor) Logout() {
 
+	interactor.Repo.Remove()
 }

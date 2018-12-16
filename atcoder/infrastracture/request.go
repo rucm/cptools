@@ -19,8 +19,8 @@ type RequestHandler struct {
 	Session     *domain.Session
 }
 
-// Parammeter :
-type Parammeter struct {
+// Parameter :
+type Parameter struct {
 	Values url.Values
 }
 
@@ -59,22 +59,22 @@ func (handler *RequestHandler) Execute(param usecase.Parameter) *usecase.Respons
 }
 
 // Get :
-func (param *Parammeter) Get(key string) string {
+func (param *Parameter) Get(key string) string {
 	return param.Values.Get(key)
 }
 
 // Set :
-func (param *Parammeter) Set(key string, value string) {
+func (param *Parameter) Set(key string, value string) {
 	param.Values.Set(key, value)
 }
 
 // Del :
-func (param *Parammeter) Del(key string) {
+func (param *Parameter) Del(key string) {
 	param.Values.Del(key)
 }
 
 // Encode :
-func (param *Parammeter) Encode() string {
+func (param *Parameter) Encode() string {
 	return param.Values.Encode()
 }
 
@@ -107,8 +107,9 @@ func createResponse(res *http.Response) *usecase.Response {
 	}
 
 	response := &usecase.Response{
-		Body:    string(body),
-		Session: session,
+		StatusCode: res.StatusCode,
+		Body:       string(body),
+		Session:    session,
 	}
 
 	return response

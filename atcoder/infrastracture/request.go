@@ -58,6 +58,13 @@ func (handler *RequestHandler) Execute(param usecase.Parameter) *usecase.Respons
 	return response
 }
 
+// NewParameter :
+func NewParameter() *Parameter {
+	param := &Parameter{}
+	param.Values = url.Values{}
+	return param
+}
+
 // Get :
 func (param *Parameter) Get(key string) string {
 	return param.Values.Get(key)

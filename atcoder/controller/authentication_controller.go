@@ -32,7 +32,7 @@ func NewAuthenticationController() *AuthenticationController {
 // Login :
 func (controller *AuthenticationController) Login(user string, password string) {
 
-	param := &infrastracture.Parammeter{}
+	param := infrastracture.NewParameter()
 	param.Set("name", user)
 	param.Set("password", password)
 	controller.Interactor.Login(param)

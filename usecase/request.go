@@ -19,6 +19,7 @@ type Parameter interface {
 
 // Response : response
 type Response struct {
-	Body    string
-	Session *domain.Session
+	StatusCode int
+	Body       string
+	Session    *domain.Session
 }

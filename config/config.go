@@ -35,7 +35,13 @@ func init() {
 		}
 
 	} else {
-		yaml.Marshal(&defaultData)
+		buf, err := yaml.Marshal(&defaultData)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		ioutil.WriteFile(configFile, buf, 0600)
 	}
 }
 

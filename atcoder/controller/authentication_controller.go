@@ -4,6 +4,7 @@ import (
 	infrastracture "github.com/rucm/cptools/atcoder/infrastracture"
 	interactor "github.com/rucm/cptools/atcoder/interactor"
 	repository "github.com/rucm/cptools/atcoder/repository"
+	config "github.com/rucm/cptools/config"
 	"github.com/rucm/cptools/usecase"
 )
 
@@ -18,12 +19,12 @@ func NewAuthenticationController() *AuthenticationController {
 	return &AuthenticationController{
 		Interactor: &interactor.AuthenticationInteractor{
 			Handler: &infrastracture.RequestHandler{
-				URL:         "https://practice.contest.atcoder.jp/login",
+				URL:         config.Config.AtCoder.LoginURL,
 				Method:      "POST",
 				ContentType: "application/x-www-form-urlencoded",
 			},
 			Repo: &repository.SessionFileRepository{
-				Filaname: "atcoder.session",
+				Filaname: config.Config.Common.SessionFile,
 			},
 		},
 	}

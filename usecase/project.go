@@ -1,8 +1,9 @@
 package usecase
 
+import "github.com/rucm/cptools/domain"
+
 // Project :
 type Project interface {
-	Load(contestID string)
-	Expand(problemID string)
-	ExpandAll()
+	GetContest(contestID string) *domain.Contest
+	GetProblem(problemID string) *domain.Problem
 }

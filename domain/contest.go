@@ -4,5 +4,5 @@ package domain
 type Contest struct {
 	Name     string
 	URL      string
-	problems []Problem
+	Problems []Problem
 }

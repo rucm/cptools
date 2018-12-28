@@ -6,5 +6,7 @@ import (
 
 // Query :
 type Query interface {
-	Download(contestID string) *domain.Contest
+	Download(contestID string)
+	Parse()
+	Get() *domain.Contest
 }

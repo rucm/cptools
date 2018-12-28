@@ -14,14 +14,5 @@ type ProjectInteractor struct {
 // Load :
 func (interactor *ProjectInteractor) Load(contestID string) {
 
-}
-
-// Expand :
-func (interactor *ProjectInteractor) Expand(problemID string) {
-
-}
-
-// ExpandAll :
-func (interactor *ProjectInteractor) ExpandAll() {
-
+	// session := interactor.SessionRepo.Read()
 }

@@ -30,7 +30,7 @@ func (handler *RequestHandler) Execute(param usecase.Parameter) *usecase.Respons
 	req := createRequest(
 		handler.Method,
 		handler.URL,
-		param.Encode(),
+		param,
 	)
 
 	if handler.Session != nil {
@@ -85,12 +85,18 @@ func (param *Parameter) Encode() string {
 	return param.Values.Encode()
 }
 
-func createRequest(method string, URL string, param string) *http.Request {
+func createRequest(method string, URL string, param usecase.Parameter) *http.Request {
+
+	encode := ""
+
+	if param != nil {
+		encode = param.Encode()
+	}
 
 	req, err := http.NewRequest(
 		method,
 		URL,
-		strings.NewReader(param),
+		strings.NewReader(encode),
 	)
 
 	if err != nil {
